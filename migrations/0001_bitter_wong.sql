@@ -1,0 +1,1 @@
+ALTER TABLE "transactions" ALTER COLUMN "status" SET DEFAULT 'completed';
