@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery , useQueryClient} from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 
 interface User {
@@ -11,6 +11,7 @@ interface User {
 }
 
 export function useAuth() {
+  const queryClient = useQueryClient();
   const { data: user, isLoading, error } = useQuery<User | null>({
     queryKey: ["/api/auth/user"],
     queryFn: async () => {
@@ -46,6 +47,7 @@ export function useAuth() {
     const res = await apiRequest("POST", "/api/auth/login", { email, password });
     const data = await res.json();
     localStorage.setItem("authToken", data.token);
+    await queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
     return data;
   };
 
@@ -53,6 +55,7 @@ export function useAuth() {
     const res = await apiRequest("POST", "/api/auth/register", { fullName, email, password });
     const data = await res.json();
     localStorage.setItem("authToken", data.token);
+    await queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
     return data;
   };
 

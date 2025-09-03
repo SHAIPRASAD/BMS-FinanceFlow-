@@ -52,12 +52,19 @@ export default function Landing() {
   const handleLogin = async (data: LoginForm) => {
     setIsLoading(true);
     try {
-      await login(data.email, data.password);
-      setLocation("/");
-      toast({
-        title: "Welcome back!",
-        description: "You have been successfully logged in.",
-      });
+      const response=await login(data.email, data.password);
+      console.log(response);
+      if (response){
+        if (response.user.isAdmin) {
+          setLocation("/admin");
+        } else {
+          setLocation("/");
+        }
+        toast({
+          title: "Welcome back!",
+          description: "You have been successfully logged in.",
+        });
+      }
     } catch (error: any) {
       toast({
         title: "Login failed",

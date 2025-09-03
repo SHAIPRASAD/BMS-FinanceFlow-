@@ -41,7 +41,7 @@ function Router() {
         <Route path="/transfer" component={Transfer} />
         <Route path="/beneficiaries" component={Beneficiaries} />
         <Route path="/history" component={History} />
-        {user.isAdmin && <Route path="/admin" component={Admin} />}
+        <Route path="/admin" component={user.isAdmin ? Admin : NotFound} />
         <Route component={NotFound} />
       </Switch>
     </>
